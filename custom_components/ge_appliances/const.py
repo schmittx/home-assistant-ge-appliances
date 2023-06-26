@@ -1,6 +1,6 @@
 """Constants for the gehome integration."""
 
-DOMAIN = "ge_home"
+DOMAIN = "ge_appliances"
 
 EVENT_ALL_APPLIANCES_READY = 'all_appliances_ready'
 

@@ -8,7 +8,7 @@ from gehomesdk import (
     ErdOnOff
 )
 
-from custom_components.ge_home.entities.water_heater.ge_water_heater import GeWaterHeater
+from custom_components.ge_appliances.entities.water_heater.ge_water_heater import GeWaterHeater
 
 from .base import ApplianceApi
 from ..entities import (

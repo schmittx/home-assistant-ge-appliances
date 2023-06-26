@@ -1,4 +1,4 @@
-"""The ge_home integration."""
+"""The ge_appliances integration."""
 
 import logging
 from homeassistant.const import EVENT_HOMEASSISTANT_STOP
@@ -37,10 +37,10 @@ async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry):
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
-    """Set up the ge_home component."""
+    """Set up the ge_appliances component."""
     hass.data.setdefault(DOMAIN, {})
 
-    """Set up ge_home from a config entry."""
+    """Set up ge_appliances from a config entry."""
     coordinator = GeHomeUpdateCoordinator(hass, entry)
     hass.data[DOMAIN][entry.entry_id] = coordinator
 

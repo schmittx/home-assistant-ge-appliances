@@ -188,7 +188,7 @@ class GeHomeUpdateCoordinator(DataUpdateCoordinator):
             raise
 
     async def async_begin_session(self):
-        """Begins the ge_home session."""
+        """Begins the ge_appliances session."""
         _LOGGER.debug("Beginning session")
         session = self._hass.helpers.aiohttp_client.async_get_clientsession()
         await self.client.async_get_credentials(session)
@@ -220,16 +220,16 @@ class GeHomeUpdateCoordinator(DataUpdateCoordinator):
 
     @callback
     def reconnect(self, log=False) -> None:
-        """Prepare to reconnect ge_home session."""
+        """Prepare to reconnect ge_appliances session."""
         if log:
-            _LOGGER.info("Will try to reconnect to ge_home service")
+            _LOGGER.info("Will try to reconnect to ge_appliances service")
         self.hass.loop.create_task(self.async_reconnect())
 
     async def async_reconnect(self) -> None:
-        """Try to reconnect ge_home session."""
+        """Try to reconnect ge_appliances session."""
         self._retry_count += 1
         _LOGGER.info(
-            f"attempting to reconnect to ge_home service (attempt {self._retry_count})"
+            f"attempting to reconnect to ge_appliances service (attempt {self._retry_count})"
         )
 
         try:
@@ -249,7 +249,7 @@ class GeHomeUpdateCoordinator(DataUpdateCoordinator):
         """Close the connection on shutdown.
         Used as an argument to EventBus.async_listen_once.
         """
-        _LOGGER.info("ge_home shutting down")
+        _LOGGER.info("ge_appliances shutting down")
         if self.client:
             self.client.clear_event_handlers()
             self.client.disconnect()

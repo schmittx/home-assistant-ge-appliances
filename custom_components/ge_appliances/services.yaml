@@ -5,7 +5,7 @@ set_timer:
   description: Sets a timer value (timespan)
   target:
     entity:
-      integration: "ge_home"
+      integration: "ge_appliances"
       domain: "sensor"
   fields:
     duration:
@@ -25,7 +25,7 @@ clear_timer:
   description: Clears a timer value (sets to zero)
   target:
     entity:
-      integration: "ge_home"
+      integration: "ge_appliances"
       domain: "sensor"
 
 set_int_value:
@@ -33,7 +33,7 @@ set_int_value:
   description: Sets an integer value (also can be used with ERD enums)
   target:
     entity:
-      integration: "ge_home"
+      integration: "ge_appliances"
       domain: "sensor"
   fields:
     value:

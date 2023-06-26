@@ -1,0 +1,18 @@
+{
+  "domain": "ge_appliances",
+  "name": "GE Appliances (SmartHQ)",
+  "after_dependencies": [],
+  "codeowners": ["@schmittx"],	
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/schmittx/home-assistant-ge-appliances",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/schmittx/home-assistant-ge-appliances/issues",
+  "quality_scale": "gold",
+  "requirements": [
+    "gehomesdk==0.5.10",
+    "magicattr==0.1.6",
+    "slixmpp==1.8.3"
+  ],
+  "version": "1.0.0"
+}
