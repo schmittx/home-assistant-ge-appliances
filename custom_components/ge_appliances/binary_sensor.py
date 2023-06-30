@@ -1,12 +1,12 @@
-"""GE Home Sensor Entities"""
+"""GE Appliances Sensor Entities"""
 import logging
 from typing import Callable
 
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
 from .const import DOMAIN
 from .devices import ApplianceApi
@@ -15,8 +15,9 @@ from .update_coordinator import GeHomeUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
+
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities: Callable):
-    """GE Home binary sensors."""
+    """GE Appliances binary sensors."""
 
     _LOGGER.debug('Adding GE Binary Sensor Entities')
     coordinator: GeHomeUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]

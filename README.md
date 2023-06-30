@@ -12,17 +12,4 @@ Custom component to allow control of [GE Appliances (SmartHQ)](https://www.geapp
 4. Follow the prompts.
 
 ## Supported Devices
-- Fridge
-- Oven
-- Dishwasher / F&P Dual Dishwasher 
-- Laundry (Washer/Dryer)
-- Whole Home Water Filter
-- Whole Home Water Softener
-- Whole Home Water Heater
-- A/C (Portable, Split, Window, Built-In)
-- Range Hood
-- Advantium
-- Microwave
-- Opal Ice Maker
-- Coffee Maker / Espresso Maker
-- Beverage Center
+- Dishwasher

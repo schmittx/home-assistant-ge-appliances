@@ -2,13 +2,12 @@ import asyncio
 import logging
 from typing import Dict, List, Optional
 
-from gehomesdk import GeAppliance
-from gehomesdk.erd import ErdCode, ErdCodeType, ErdApplianceType
-
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.entity import DeviceInfo, Entity
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
+from ..api import GeAppliance
+from ..api.erd import ErdCode, ErdCodeType, ErdApplianceType
 from ..const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
@@ -84,11 +83,12 @@ class ApplianceApi:
         return self.appliance.get_erd_value(ErdCode.MODEL_NUMBER)
 
     @property
-    def sw_version(self) -> str:
-        appVer = self.try_get_erd_value(ErdCode.APPLIANCE_SW_VERSION)
-        wifiVer = self.try_get_erd_value(ErdCode.WIFI_MODULE_SW_VERSION)
+    def appliance_sw_version(self) -> str:
+        return self.try_get_erd_value(ErdCode.APPLIANCE_SW_VERSION)
 
-        return 'Appliance=' + str(appVer or 'Unknown') + '/Wifi=' + str(wifiVer or 'Unknown')
+    @property
+    def wifi_module_sw_version(self) -> str:
+        return self.try_get_erd_value(ErdCode.WIFI_MODULE_SW_VERSION)
 
     @property
     def name(self) -> str:
@@ -97,19 +97,19 @@ class ApplianceApi:
             appliance_type = "Appliance"
         else:
             appliance_type = appliance_type.name.replace("_", " ").title()
-        return f"GE {appliance_type} {self.serial_or_mac}"
+        return f"{appliance_type} {self.serial_or_mac}"
 
     @property
-    def device_info(self) -> Dict:
+    def device_info(self) -> DeviceInfo:
         """Device info dictionary."""
-
-        return {
-            "identifiers": {(DOMAIN, self.serial_or_mac)},
-            "name": self.name,
-            "manufacturer": "GE",
-            "model": self.model_number,
-            "sw_version": self.sw_version
-        }
+        return DeviceInfo(
+            identifiers={(DOMAIN, self.serial_or_mac)},
+            manufacturer="GE",
+            model=self.model_number,
+            name=self.name,
+            sw_version=self.appliance_sw_version,
+#            hw_version=self.hw_version,
+        )
 
     @property
     def entities(self) -> List[Entity]:
@@ -123,17 +123,25 @@ class ApplianceApi:
         """Create base entities (i.e. common between all appliances)."""
         from ..entities import GeErdSensor, GeErdSwitch
         entities = [
-            GeErdSensor(self, ErdCode.CLOCK_TIME),
-            GeErdSwitch(self, ErdCode.SABBATH_MODE),
+            GeErdSensor(
+                api=self,
+                erd_code=ErdCode.CLOCK_TIME,
+                name="Clock Time",
+            ),
+            GeErdSwitch(
+                api=self,
+                erd_code=ErdCode.SABBATH_MODE,
+                name="Sabbath Mode",
+            ),
         ]
         return entities        
 
     def build_entities_list(self) -> None:
         """Build the entities list, adding anything new."""
-        from ..entities import GeErdEntity, GeErdButton
+        from ..entities import GeErdEntity
         entities = [
             e for e in self.get_all_entities()
-            if not isinstance(e, GeErdEntity) or isinstance(e, GeErdButton) or e.erd_code in self.appliance.known_properties
+            if not isinstance(e, GeErdEntity) or e.erd_code in self.appliance.known_properties
         ]
 
         for entity in entities:

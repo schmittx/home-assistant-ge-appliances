@@ -1,8 +1,11 @@
+from __future__ import annotations
+
 from datetime import timedelta
 from typing import Optional
 
-from gehomesdk import ErdCode, ErdCodeType, ErdCodeClass, ErdMeasurementUnits
+from homeassistant.const import EntityCategory
 
+from ...api import ErdCode, ErdCodeType, ErdCodeClass, ErdMeasurementUnits
 from ...const import DOMAIN
 from ...devices import ApplianceApi
 from .ge_entity import GeEntity
@@ -15,16 +18,20 @@ class GeErdEntity(GeEntity):
         self,
         api: ApplianceApi,
         erd_code: ErdCodeType,
-        erd_override: str = None,
-        icon_override: str = None,
-        device_class_override: str = None,
-    ):
-        super().__init__(api)
+        name: str,
+        device_class: str = None,
+        entity_category: str[EntityCategory] | None = None,
+        icon: str = None,
+    ) -> None:
+        super().__init__(
+            api=api,
+        )
+        self._device_class = device_class
+        self._entity_category = entity_category
         self._erd_code = api.appliance.translate_erd_code(erd_code)
         self._erd_code_class = api.appliance.get_erd_code_class(self._erd_code)
-        self._erd_override = erd_override
-        self._icon_override = icon_override
-        self._device_class_override = device_class_override
+        self._icon = icon
+        self._name = name
 
         if not self._erd_code_class:
             self._erd_code_class = ErdCodeClass.GENERAL
@@ -46,18 +53,12 @@ class GeErdEntity(GeEntity):
 
     @property
     def name(self) -> Optional[str]:
-        erd_string = self.erd_string
-
-        # override the name if specified
-        if self._erd_override != None:
-            erd_string = self._erd_override
-
-        erd_title = " ".join(erd_string.split("_")).title()
-        return f"{self.serial_or_mac} {erd_title}"
+        return f"{self.device_info['name']} {self._name}"
+#        return f"{self.serial_or_mac} {self._name}"
 
     @property
     def unique_id(self) -> Optional[str]:
-        return f"{DOMAIN}_{self.serial_or_mac}_{self.erd_string.lower()}"
+        return f"{self.serial_or_mac}_{self.erd_string.lower()}"
 
     def _stringify(self, value: any, **kwargs) -> Optional[str]:
         """Stringify a value"""
@@ -69,10 +70,12 @@ class GeErdEntity(GeEntity):
         if self.erd_code_class == ErdCodeClass.NON_ZERO_TEMPERATURE:
             return f"{value}" if value else ""
         if self.erd_code_class == ErdCodeClass.TIMER or isinstance(value, timedelta):
-            return str(value)[:-3] if value else "Off"
+#            return str(value)[:-3] if value else "Off"
+            return value
         if value is None:
             return None
         return self.appliance.stringify_erd_value(value, **kwargs)
+#        return "_".join(self.appliance.stringify_erd_value(value, **kwargs).split()).lower()
 
     @property
     def _measurement_system(self) -> Optional[ErdMeasurementUnits]:
@@ -88,62 +91,10 @@ class GeErdEntity(GeEntity):
 
     def _get_icon(self):
         """Select an appropriate icon."""
+        return self._icon
 
-        if self._icon_override:
-            return self._icon_override
-        if not isinstance(self.erd_code, ErdCode):
-            return None
-        if self.erd_code_class == ErdCodeClass.CLOCK:
-            return "mdi:clock"
-        if self.erd_code_class == ErdCodeClass.COUNTER:
-            return "mdi:counter"
-        if self.erd_code_class == ErdCodeClass.DOOR:
-            return "mdi:door"
-        if self.erd_code_class == ErdCodeClass.TIMER:
-            return "mdi:timer-outline"
-        if self.erd_code_class == ErdCodeClass.LOCK_CONTROL:
-            return "mdi:lock-outline"
-        if self.erd_code_class == ErdCodeClass.SABBATH_CONTROL:
-            return "mdi:star-david"
-        if self.erd_code_class == ErdCodeClass.COOLING_CONTROL:
-            return "mdi:snowflake"
-        if self.erd_code_class == ErdCodeClass.OVEN_SENSOR:
-            return "mdi:stove"
-        if self.erd_code_class == ErdCodeClass.FRIDGE_SENSOR:
-            return "mdi:fridge-bottom"
-        if self.erd_code_class == ErdCodeClass.FREEZER_SENSOR:
-            return "mdi:fridge-top"
-        if self.erd_code_class == ErdCodeClass.DISPENSER_SENSOR:
-            return "mdi:cup-water"
-        if self.erd_code_class == ErdCodeClass.DISHWASHER_SENSOR:
-            return "mdi:dishwasher"
-        if self.erd_code_class == ErdCodeClass.WATERFILTER_SENSOR:
-            return "mdi:water"
-        if self.erd_code_class == ErdCodeClass.LAUNDRY_SENSOR:
-            return "mdi:washing-machine"
-        if self.erd_code_class == ErdCodeClass.LAUNDRY_WASHER_SENSOR:
-            return "mdi:washing-machine"
-        if self.erd_code_class == ErdCodeClass.LAUNDRY_DRYER_SENSOR:
-            return "mdi:tumble-dryer"          
-        if self.erd_code_class == ErdCodeClass.ADVANTIUM_SENSOR:
-            return "mdi:microwave"              
-        if self.erd_code_class == ErdCodeClass.FLOW_RATE:
-            return "mdi:water"   
-        if self.erd_code_class == ErdCodeClass.LIQUID_VOLUME:
-            return "mdi:water" 
-        if self.erd_code_class == ErdCodeClass.AC_SENSOR:
-            return "mdi:air-conditioner"    
-        if self.erd_code_class == ErdCodeClass.TEMPERATURE_CONTROL:
-            return "mdi:thermometer"   
-        if self.erd_code_class == ErdCodeClass.FAN:
-            return "mdi:fan"
-        if self.erd_code_class == ErdCodeClass.LIGHT:
-            return "mdi:lightbulb"   
-        if self.erd_code_class == ErdCodeClass.OIM_SENSOR:
-            return "mdi:snowflake"
-        if self.erd_code_class == ErdCodeClass.WATERSOFTENER_SENSOR:
-            return "mdi:water"     
-        if self.erd_code_class == ErdCodeClass.CCM_SENSOR:
-            return "mdi:coffee-maker" 
+    def _get_device_class(self) -> Optional[str]:
+        return self._device_class
 
-        return None
+    def _get_entity_category(self) -> str[EntityCategory]:
+        return self._entity_category

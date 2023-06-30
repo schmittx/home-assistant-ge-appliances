@@ -1,4 +1,4 @@
-"""GE Home Switch Entities"""
+"""GE Appliances Switch Entities"""
 import logging
 from typing import Callable
 
@@ -15,8 +15,8 @@ from .update_coordinator import GeHomeUpdateCoordinator
 _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities: Callable):
-    """GE Home sensors."""
-    _LOGGER.debug('Adding GE Home switches')
+    """GE Appliances sensors."""
+    _LOGGER.debug('Adding GE Appliances switches')
     coordinator: GeHomeUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     registry = er.async_get(hass)
 

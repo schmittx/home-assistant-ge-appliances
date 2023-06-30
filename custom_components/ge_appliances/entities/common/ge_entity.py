@@ -1,14 +1,20 @@
+from __future__ import annotations
+
 from datetime import timedelta
 from typing import Optional, Dict, Any
 
-from gehomesdk import GeAppliance
+from homeassistant.helpers.entity import DeviceInfo
+
+from ...api import GeAppliance
 from ...devices import ApplianceApi
+
 
 class GeEntity:
     """Base class for all GE Entities"""
-    should_poll = False
+    _attr_should_poll: bool = False
+    _attr_translation_key: str | None = "all"
 
-    def __init__(self, api: ApplianceApi):
+    def __init__(self, api: ApplianceApi) -> None:
         self._api = api
         self.hass = None
 
@@ -21,7 +27,7 @@ class GeEntity:
         return self._api
 
     @property
-    def device_info(self) -> Optional[Dict[str, Any]]:
+    def device_info(self) -> DeviceInfo:
         return self.api.device_info
 
     @property
@@ -56,6 +62,10 @@ class GeEntity:
     def device_class(self) -> Optional[str]:
         return self._get_device_class()    
 
+    @property
+    def entity_category(self) -> Optional[str]:
+        return self._get_entity_category()    
+
     def _stringify(self, value: any, **kwargs) -> Optional[str]:
         if isinstance(value, timedelta):
             return str(value)[:-3] if value else ""
@@ -70,4 +80,7 @@ class GeEntity:
         return None
 
     def _get_device_class(self) -> Optional[str]:
+        return None
+
+    def _get_entity_category(self) -> Optional[str]:
         return None

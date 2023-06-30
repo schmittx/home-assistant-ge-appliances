@@ -1,4 +1,4 @@
-"""Config flow for GE Home integration."""
+"""Config flow for GE Appliances integration."""
 
 import logging
 from typing import Dict, Optional
@@ -7,7 +7,7 @@ import aiohttp
 import asyncio
 import async_timeout
 
-from gehomesdk import (
+from .api import (
     GeAuthFailedError, 
     GeNotAuthenticatedError, 
     GeGeneralServerError, 
@@ -55,7 +55,7 @@ async def validate_input(hass: core.HomeAssistant, data):
     return {"title": f"{data[CONF_USERNAME]:s}"}
 
 class GeHomeConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for GE Home."""
+    """Handle a config flow for GE Appliances."""
 
     VERSION = 2
     CONNECTION_CLASS = config_entries.CONN_CLASS_CLOUD_PUSH

@@ -1,6 +1,6 @@
 from typing import Any
 
-from gehomesdk import ErdOnOff
+from ...api import ErdOnOff
 
 class BoolConverter:
     def boolify(self, value: Any) -> bool:

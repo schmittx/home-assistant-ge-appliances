@@ -17,5 +17,54 @@
     "abort": {
       "already_configured_account": "[%key:common::config_flow::abort::already_configured_account%]"
     }
+  },
+  "entity": {
+    "sensor": {
+        "all": {
+            "state": {
+              "auto": "Auto",
+              "autosense": "AutoSense",
+              "boost": "Boost",
+              "boost_and_sanitize": "Boost and Sanitize",
+              "both": "Both",
+              "cycle_active": "Cycle Active",
+              "delay_start": "Delay Start",
+              "delicate": "Delicate",
+              "disabled": "Disabled",
+              "drying": "Drying",
+              "eco": "Eco",
+              "eoc": "End of Cycle",
+              "heavy_heavy": "Heavy Heavy",
+              "heavy_max_full_d": "Heavy Max Full D",
+              "heavy_super_dry": "Heavy Super Dry",
+              "heavy_pw_pulsing": "Heavy PW Pulsing",
+              "heavy_pw2_(vs": "Heavy PW2 (VS",
+              "heavy_pw3_(non-": "Heavy PW3 (Non-",
+              "heavy_sani_fr": "Heavy Sani Fr",
+              "heavy_steam_dry": "Heavy Steam Dry",
+              "heavy_steam_or_p": "Heavy Steam or P",
+              "inactive": "Inactive",
+              "intense": "Intense",
+              "light_super_dry": "Light Super Dry",
+              "lower": "Lower",
+              "low_power": "Low Power",
+              "main_wash": "Main Wash",
+              "max_dry": "Max Dry",
+              "normal": "Normal",
+              "normal_super_dry": "Normal Super Dry",
+              "pause": "Pause",
+              "power_dry": "Power Dry",
+              "pre_wash": "Pre-Wash",
+              "sanitize": "Sanitize",
+              "sanitizing": "Sanitizing",
+              "sensing": "Sensong",
+              "rinse": "Rinse",
+              "rinsing": "Rinsing",
+              "standby": "Standby",
+              "thirty_min": "Thirty Minute",
+              "upper": "Upper"
+            }
+        }
+    }
   }
 }

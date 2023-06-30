@@ -1,13 +1,13 @@
 """The ge_appliances integration."""
 
 import logging
-from homeassistant.const import EVENT_HOMEASSISTANT_STOP
 import voluptuous as vol
 
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import CONF_REGION, EVENT_HOMEASSISTANT_STOP
 from homeassistant.core import HomeAssistant
-from homeassistant.const import CONF_REGION
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
+
 from .const import DOMAIN
 from .exceptions import HaAuthError, HaCannotConnect
 from .update_coordinator import GeHomeUpdateCoordinator

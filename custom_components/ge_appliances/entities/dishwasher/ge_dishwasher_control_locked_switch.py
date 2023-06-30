@@ -1,4 +1,4 @@
-from gehomesdk import ErdCode, ErdOperatingMode
+from ...api import ErdCode, ErdOperatingMode
 
 from ..common import GeErdSwitch
 

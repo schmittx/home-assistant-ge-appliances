@@ -1,1 +1,0 @@
-from .filter_position import GeErdFilterPositionSelect

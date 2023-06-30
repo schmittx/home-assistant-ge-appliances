@@ -10,7 +10,6 @@
   "issue_tracker": "https://github.com/schmittx/home-assistant-ge-appliances/issues",
   "quality_scale": "gold",
   "requirements": [
-    "gehomesdk==0.5.10",
     "magicattr==0.1.6",
     "slixmpp==1.8.3"
   ],

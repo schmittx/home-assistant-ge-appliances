@@ -1,11 +1,11 @@
-"""Data update coordinator for GE Home Appliances"""
+"""Data update coordinator for GE Appliances Appliances"""
 
 import asyncio
 import async_timeout
 import logging
 from typing import Any, Dict, Iterable, Optional, Tuple
 
-from gehomesdk import (
+from .api import (
     EVENT_APPLIANCE_INITIAL_UPDATE,
     EVENT_APPLIANCE_UPDATE_RECEIVED,
     EVENT_CONNECTED,
@@ -13,9 +13,11 @@ from gehomesdk import (
     EVENT_GOT_APPLIANCE_LIST,
     ErdCodeType,
     GeAppliance,
+    GeAuthFailedError,
+    GeGeneralServerError,
+    GeNotAuthenticatedError,
     GeWebsocketClient,
 )
-from gehomesdk import GeAuthFailedError, GeGeneralServerError, GeNotAuthenticatedError
 from .exceptions import HaAuthError, HaCannotConnect
 
 from homeassistant.config_entries import ConfigEntry
@@ -35,12 +37,16 @@ from .const import (
 )
 from .devices import ApplianceApi, get_appliance_api_type
 
-PLATFORMS = ["binary_sensor", "sensor", "switch", "water_heater", "select", "climate", "light", "button", "number"]
+PLATFORMS = [
+    "binary_sensor",
+    "sensor",
+    "switch",
+]
 _LOGGER = logging.getLogger(__name__)
 
 
 class GeHomeUpdateCoordinator(DataUpdateCoordinator):
-    """Define a wrapper class to update GE Home data."""
+    """Define a wrapper class to update GE Appliances data."""
 
     def __init__(self, hass: HomeAssistant, config_entry: ConfigEntry) -> None:
         """Set up the GeHomeUpdateCoordinator class."""
