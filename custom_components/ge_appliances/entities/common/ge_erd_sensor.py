@@ -34,7 +34,7 @@ class GeErdSensor(GeErdEntity, SensorEntity):
         icon: str = None,
         data_type: ErdDataType = None,
         native_unit_of_measurement: str = None,
-        state_class: str = None,
+        state_class: str[SensorStateClass] | None = None,
     ) -> None:
         super().__init__(
             api=api,

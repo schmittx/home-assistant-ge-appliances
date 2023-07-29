@@ -1,6 +1,7 @@
 import logging
 from typing import List
 
+from homeassistant.components.sensor import SensorStateClass
 from homeassistant.const import UnitOfTime
 from homeassistant.helpers.entity import Entity
 from ..api.erd import ErdCode, ErdApplianceType
@@ -181,6 +182,7 @@ class DishwasherApi(ApplianceApi):
 #                icon="mdi:counter",
                 name="Cycles Started",
                 native_unit_of_measurement="cycles",
+                state_class=SensorStateClass.TOTAL_INCREASING,
             ),
             GeErdPropertySensor(
                 api=self,
@@ -189,6 +191,7 @@ class DishwasherApi(ApplianceApi):
 #                icon="mdi:counter",
                 name="Cycles Completed",
                 native_unit_of_measurement="cycles",
+                state_class=SensorStateClass.TOTAL_INCREASING,
             ),
             GeErdPropertySensor(
                 api=self,
@@ -197,6 +200,7 @@ class DishwasherApi(ApplianceApi):
 #                icon="mdi:counter",
                 name="Cycles Reset",
                 native_unit_of_measurement="cycles",
+                state_class=SensorStateClass.TOTAL_INCREASING,
             )
         ]
         entities = base_entities + dishwasher_entities

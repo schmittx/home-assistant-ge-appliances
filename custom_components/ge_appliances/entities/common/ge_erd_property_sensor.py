@@ -3,6 +3,7 @@ from __future__ import annotations
 import magicattr
 from typing import Optional
 
+from homeassistant.components.sensor import SensorStateClass
 from homeassistant.const import EntityCategory
 
 from ...api import ErdCode, ErdCodeType, ErdMeasurementUnits, ErdDataType
@@ -23,7 +24,7 @@ class GeErdPropertySensor(GeErdSensor):
         icon: str = None,
         data_type: ErdDataType = None,
         native_unit_of_measurement: str = None,
-        state_class: str = None,
+        state_class: str[SensorStateClass] | None = None,
     ) -> None:
         super().__init__(
             api=api,
