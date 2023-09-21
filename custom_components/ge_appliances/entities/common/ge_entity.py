@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import timedelta
 from typing import Optional, Dict, Any
 
-from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers.device_registry import DeviceInfo
 
 from ...api import GeAppliance
 from ...devices import ApplianceApi
