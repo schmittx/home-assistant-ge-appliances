@@ -4,15 +4,7 @@ import logging
 from typing import Optional
 
 from homeassistant.components.sensor import SensorEntity, SensorStateClass
-from homeassistant.const import (
-    DEVICE_CLASS_ENERGY,
-    DEVICE_CLASS_POWER,
-    DEVICE_CLASS_TEMPERATURE,
-    DEVICE_CLASS_BATTERY,
-    DEVICE_CLASS_POWER_FACTOR,
-    TEMP_FAHRENHEIT,
-    EntityCategory,
-)
+from homeassistant.const import EntityCategory
 
 from ...api import ErdCodeType, ErdCodeClass
 from ...api.erd.erd_data_type import ErdDataType

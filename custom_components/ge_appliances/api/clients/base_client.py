@@ -109,7 +109,7 @@ class GeBaseClient(metaclass=abc.ABCMeta):
         try:
             self.event_handlers[event].remove(callable)
         except:
-            _LOGGER.warn(f"could not remove event handler {event}-{callable}")
+            _LOGGER.warning(f"could not remove event handler {event}-{callable}")
 
     def clear_event_handlers(self):
         self._initialize_event_handlers()
@@ -136,7 +136,7 @@ class GeBaseClient(metaclass=abc.ABCMeta):
                 _LOGGER.info(f'Error executing request {err}')
             except Exception as err:
                 if not self._has_successful_connect:
-                    _LOGGER.warn(f'Unhandled exception on first connect attempt: {err}, disconnecting')
+                    _LOGGER.warning(f'Unhandled exception on first connect attempt: {err}, disconnecting')
                     break
                 _LOGGER.exception(err)
                 _LOGGER.info(f'Unhandled exception while running client, ignoring and restarting')
@@ -151,7 +151,7 @@ class GeBaseClient(metaclass=abc.ABCMeta):
                         await self.async_do_refresh_login_flow()
                     except Exception as err:
                         #if there was an error refreshing the authentication, break the loop and kill the client
-                        _LOGGER.warn(f'Error refreshing authentication: {err}')
+                        _LOGGER.warning(f'Error refreshing authentication: {err}')
                         break
                 self._retries_since_last_connect += 1
 
@@ -233,7 +233,18 @@ class GeBaseClient(metaclass=abc.ABCMeta):
 
         await self._set_state(GeClientState.AUTHORIZING_OAUTH)
 
-        oauth_token = await async_refresh_oauth2_token(self._session, self._refresh_token)
+        # first try the standard refresh token
+        # if we get an exception, try the full login
+        # if that has an exception, just raise the original
+        # exception
+        try:
+            oauth_token = await async_refresh_oauth2_token(self._session, self._refresh_token)
+        except Exception as exc:
+            try:
+                oauth_token = await self._async_get_oauth2_token(self)
+            except:
+                _LOGGER.warning("Error occurred when retrying token refresh using full flow, ignoring.")
+                raise exc
 
         try:
             self._access_token = oauth_token['access_token']

@@ -6,12 +6,13 @@
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/schmittx/home-assistant-ge-appliances",
-  "iot_class": "cloud_polling",
+  "integration_type": "hub",
+  "iot_class": "cloud_push",
   "issue_tracker": "https://github.com/schmittx/home-assistant-ge-appliances/issues",
   "quality_scale": "gold",
   "requirements": [
     "magicattr==0.1.6",
     "slixmpp==1.8.3"
   ],
-  "version": "1.0.3"
+  "version": "1.0.4"
 }

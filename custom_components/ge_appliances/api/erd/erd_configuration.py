@@ -113,8 +113,8 @@ _configuration = [
         ErdCodeClass.GENERAL,
     ),
     ErdConfigurationEntry(
-        ErdCode.WIFI_MODULE_UPDATING,
-        ErdReadOnlyBoolConverter(),
+        ErdCode.BRAND,
+        ErdBrandConverter(),
         ErdCodeClass.GENERAL,
     ),
     ErdConfigurationEntry(

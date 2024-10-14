@@ -166,7 +166,7 @@ class GeXmppClient(GeBaseClient):
         try:
             await self._add_appliance(jid)
         except GeDuplicateApplianceError as err:
-            _LOGGER.warn(f'{err}')
+            _LOGGER.warning(f'{err}')
             pass
 
     async def _on_presence_available(self, evt: slixmpp.ElementBase):
