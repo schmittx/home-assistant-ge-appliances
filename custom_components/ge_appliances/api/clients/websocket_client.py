@@ -2,6 +2,7 @@ import asyncio
 import logging
 import ssl
 import websockets
+from websockets.protocol import State
 from typing import Any, Dict, List, Optional, Tuple
 
 from ..erd import ErdCode, ErdCodeType
@@ -60,12 +61,12 @@ class GeWebsocketClient(GeBaseClient):
         self._keepalive_fut = None  # type: Optional[asyncio.Future]
         self._list_frequency = list_frequency
         self._list_fut = None # type: Optional[asyncio.Future]
-        self._ssl_context = ssl_context
+        self._ssl_context = ssl_context or ssl.create_default_context()
 
     @property
     def available(self) -> bool:
         """ Indicates whether the client is available for sending/receiving commands """
-        return self._socket and not self._socket.closed
+        return self._socket and not self._socket.state is State.CLOSED
 
     async def _async_do_full_login_flow(self) -> Dict[str,str]:
         """Perform a complete login flow, returning credentials."""
@@ -252,7 +253,7 @@ class GeWebsocketClient(GeBaseClient):
 
     async def _disconnect(self):
         """Disconnect and cleanup."""
-        if self._socket and not self._socket.closed:
+        if self._socket and not self._socket.state is State.CLOSED:
             await self._socket.close()
         self._socket = None
 

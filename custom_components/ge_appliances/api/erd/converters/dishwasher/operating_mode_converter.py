@@ -15,4 +15,4 @@ class OperatingModeConverter(ErdReadOnlyConverter[OperatingMode]):
 #            return OPERATING_MODE_MAP[om]
             return operating_mode
         except (KeyError, ValueError):
-            return "unknown"
+            return ErdOperatingMode.INVALID
